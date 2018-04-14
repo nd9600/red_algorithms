@@ -84,13 +84,33 @@ heap: context [
         ; we don't need to reimpose the heap property if the heap only has 1 element in it
         if indexOfCurrentNode == 1 [exit]
 
-        ; while we're not at the root node, and
-        ; the parent node is > the current node, swap them
-        while [ (indexOfParent <> 1) and ((compare h/:indexOfParent h/:indexOfCurrentNode) > 0) ] [
+        comment [
+        print rejoin [newline "indexOfParent: " indexOfParent]
+        print rejoin ["indexOfCurrentNode: " indexOfCurrentNode]
+        print rejoin ["h/:indexOfParent: " h/:indexOfParent]
+        print rejoin ["h/:indexOfCurrentNode: " h/:indexOfCurrentNode]
+        ]
+
+        ; while we're not at the root node, and the parent node is > the current node, swap them
+        ; (the root node's parent has an index of 0)
+        while [ 
+            all [
+                indexOfParent <> 0
+                not none? h/:indexOfParent
+                (compare h/:indexOfParent h/:indexOfCurrentNode) > 0
+            ]
+        ] [
 
             swapH indexOfCurrentNode indexOfParent
             indexOfCurrentNode: indexOfParent
             indexOfParent: indexOfCurrentNode / 2
+
+            comment [
+            print rejoin [newline "indexOfParent: " indexOfParent]
+            print rejoin ["indexOfCurrentNode: " indexOfCurrentNode]
+            print rejoin ["h/:indexOfParent: " h/:indexOfParent]
+            print rejoin ["h/:indexOfCurrentNode: " h/:indexOfCurrentNode]
+            ]
         ]
     ]
 
@@ -98,20 +118,31 @@ heap: context [
     ; may need to reimpose the heap property
     pop: function [] [
         minElement: minH
-        remove back tail h
-        heapSize: length? h
 
         ; moves the biggest element to the root, then reimposes the heap property
+        swapH 1 (length? h)
+        remove back tail h
+
+        heapSize: length? h
 
         indexOfCurrentNode: 1
         indexOfLeftChild: 2 * indexOfCurrentNode
         indexOfRightChild: (2 * indexOfCurrentNode) + 1
 
+        print minElement
+        print toString h
+
         ; while a minimum child node exists, and it's less than the current node, swap them
-        while [ (indexOfLeftChild < heapSize) and ( (compare h/(findMinChild indexOfLeftChild indexOfRightChild) h/:indexOfCurrentNode) < 0 ) ] [
+        while [ 
+            all [
+                indexOfLeftChild < heapSize
+                not none? h/:indexOfLeftChild
+                (compare h/(findMinChild indexOfLeftChild indexOfRightChild) h/:indexOfCurrentNode) < 0
+            ] 
+        ] [
 
             indexOfMinChild: findMinChild indexOfLeftChild indexOfRightChild
-            swapH :indexOfCurrentNode indexOfMinChild
+            swapH indexOfCurrentNode indexOfMinChild
 
             indexOfCurrentNode: indexOfMinChild
             indexOfLeftChild: 2 * indexOfCurrentNode
