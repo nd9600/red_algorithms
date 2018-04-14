@@ -61,13 +61,17 @@ heap: context [
     ]
 
     ; finds the minimum child of a node
+    ; returns the left child if the right doesn't exist
     ; returns the right child if the two children have the same keys
     findMinChild: function [
         leftChildIndex [integer!]
         rightChildIndex [integer!]
     ] [
-        if (compare h/:leftChildIndex h/:rightChildIndex) < 0 [return leftChildIndex]
-        rightChildIndex
+        case [
+            none? h/:rightChildIndex [leftChildIndex]
+            (compare h/:leftChildIndex h/:rightChildIndex) < 0 [leftChildIndex]
+            true [rightChildIndex]
+        ]
     ]
 
     ; inserts an element into the heap
@@ -84,13 +88,6 @@ heap: context [
         ; we don't need to reimpose the heap property if the heap only has 1 element in it
         if indexOfCurrentNode == 1 [exit]
 
-        comment [
-        print rejoin [newline "indexOfParent: " indexOfParent]
-        print rejoin ["indexOfCurrentNode: " indexOfCurrentNode]
-        print rejoin ["h/:indexOfParent: " h/:indexOfParent]
-        print rejoin ["h/:indexOfCurrentNode: " h/:indexOfCurrentNode]
-        ]
-
         ; while we're not at the root node, and the parent node is > the current node, swap them
         ; (the root node's parent has an index of 0)
         while [ 
@@ -104,13 +101,6 @@ heap: context [
             swapH indexOfCurrentNode indexOfParent
             indexOfCurrentNode: indexOfParent
             indexOfParent: indexOfCurrentNode / 2
-
-            comment [
-            print rejoin [newline "indexOfParent: " indexOfParent]
-            print rejoin ["indexOfCurrentNode: " indexOfCurrentNode]
-            print rejoin ["h/:indexOfParent: " h/:indexOfParent]
-            print rejoin ["h/:indexOfCurrentNode: " h/:indexOfCurrentNode]
-            ]
         ]
     ]
 
@@ -129,22 +119,12 @@ heap: context [
         indexOfLeftChild: 2 * indexOfCurrentNode
         indexOfRightChild: (2 * indexOfCurrentNode) + 1
 
-        print minElement
-        print toString h
-        print rejoin ["heapSize: " heapSize]
-        print rejoin ["indexOfCurrentNode: " indexOfCurrentNode]
-        print rejoin ["indexOfLeftChild: " indexOfLeftChild]
-        print rejoin ["indexOfRightChild: " indexOfRightChild]
-        print rejoin ["h/:indexOfCurrentNode: " h/:indexOfCurrentNode]
-        print rejoin ["h/:indexOfLeftChild: " h/:indexOfLeftChild]
-        print rejoin ["h/:indexOfRightChild: " h/:indexOfRightChild]
-
         ; while a minimum child node exists, and it's less than the current node, swap them
         while [ 
             all [
-                indexOfLeftChild < heapSize
+                indexOfLeftChild <= heapSize
                 not none? h/:indexOfLeftChild
-                (compare h/(findMinChild indexOfLeftChild indexOfRightChild) h/:indexOfCurrentNode) < 0
+                (probe compare h/(findMinChild indexOfLeftChild indexOfRightChild) probe h/:indexOfCurrentNode) < 0
             ] 
         ] [
 
@@ -154,14 +134,6 @@ heap: context [
             indexOfCurrentNode: indexOfMinChild
             indexOfLeftChild: 2 * indexOfCurrentNode
             indexOfRightChild: (2 * indexOfCurrentNode) + 1
-
-            print toString [newline h]
-            print rejoin ["indexOfCurrentNode: " indexOfCurrentNode]
-            print rejoin ["indexOfLeftChild: " indexOfLeftChild]
-            print rejoin ["indexOfRightChild: " indexOfRightChild]
-            print rejoin ["h/:indexOfCurrentNode: " h/:indexOfCurrentNode]
-            print rejoin ["h/:indexOfLeftChild: " h/:indexOfLeftChild]
-            print rejoin ["h/:indexOfRightChild: " h/:indexOfRightChild]
         ]
         minElement
     ]
