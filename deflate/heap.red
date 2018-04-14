@@ -1,3 +1,35 @@
+Red [
+    Title:   "Binary min-heap implementation, as a block!"
+    Author:  "Nathan Douglas"
+    License: "MIT - https://opensource.org/licenses/MIT"
+    Description: {Every node in a heap has the heap property. This is a min-heap, so:         
+        If P is a parent of C, then P's key is less than or equal to C's.
+
+                            1
+                        4       11
+                       5 20   13  15
+                           25       21
+
+        This is a binary heap, so the heap is a binary tree - a parent node can have a maximum of 2 children
+        The root node always has the element with the lowest key
+        The default implementation works with anything than can be compared with <. Override the 'compare function to use the heap for something else
+
+        First element contains the root
+        Next two elements contains its children
+        Next four elements contains the children of those two nodes, etc.
+        -> children of node at position n are at 2n and 2n + 1
+
+         1    2    3    4    5    6    7
+        [a    b    c    d    e    f    g]
+         |    |    |    |    |    |    |
+          ---------     |    |    |    |
+              |    |    |    |    |    |
+               --------------     |    |
+                   |              |    |
+                    -------------------
+    }
+]
+
 heap: context [
 
     ; the things stored in the heap - you can store whatever you want, as long as you override the 'compare function below
