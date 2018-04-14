@@ -125,12 +125,11 @@ heap: context [
                 indexOfLeftChild <= heapSize
                 not none? h/:indexOfLeftChild
                 [
-                    minChild: findMinChild indexOfLeftChild indexOfRightChild
-                    (compare h/:minChild h/:indexOfCurrentNode) < 0
+                    indexOfMinChild: findMinChild indexOfLeftChild indexOfRightChild
+                    (compare h/:indexOfMinChild h/:indexOfCurrentNode) < 0
                 ]
             ] 
         ] [
-
             indexOfMinChild: findMinChild indexOfLeftChild indexOfRightChild
             swapH indexOfCurrentNode indexOfMinChild
 
