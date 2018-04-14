@@ -30,7 +30,7 @@ Red [
         }
 ]
 
-context [
+heap: context [
 
     ; the things stored in the heap - you can store whatever you want, as long as you override the 'compare function below
     h: copy []
@@ -53,6 +53,13 @@ context [
     ; returns the root node's element without removing it
     minH: function [] [h/1]
 
+    swapH: function [
+        aIndex [integer!]
+        bIndex [integer!]
+    ] [
+        swap (at h aIndex) (at h bIndex)
+    ]
+
     ; finds the minimum child of a node
     ; returns the right child if the two children have the same keys
     findMinChild: function [
@@ -74,11 +81,14 @@ context [
         indexOfCurrentNode: length? h
         indexOfParent: indexOfCurrentNode / 2
 
+        ; we don't need to reimpose the heap property if the heap only has 1 element in it
+        if indexOfCurrentNode == 1 [exit]
+
         ; while we're not at the root node, and
         ; the parent node is > the current node, swap them
-        while [ (indexOfParentNode <> 1) and ((compare h/:indexOfParent h/:indexOfCurrentNode) > 0) ] [
+        while [ (indexOfParent <> 1) and ((compare h/:indexOfParent h/:indexOfCurrentNode) > 0) ] [
 
-            swap h/:indexOfCurrentNode h/:indexOfParent
+            swapH indexOfCurrentNode indexOfParent
             indexOfCurrentNode: indexOfParent
             indexOfParent: indexOfCurrentNode / 2
         ]
@@ -101,7 +111,7 @@ context [
         while [ (indexOfLeftChild < heapSize) and ( (compare h/(findMinChild indexOfLeftChild indexOfRightChild) h/:indexOfCurrentNode) < 0 ) ] [
 
             indexOfMinChild: findMinChild indexOfLeftChild indexOfRightChild
-            swap h/:indexOfCurrentNode h/:indexOfMinChild
+            swapH :indexOfCurrentNode indexOfMinChild
 
             indexOfCurrentNode: indexOfMinChild
             indexOfLeftChild: 2 * indexOfCurrentNode
@@ -111,6 +121,6 @@ context [
     ]
 
     toString: function [] [
-        reform h
+        rejoin copy ["[" form reduce :h "]"]
     ]
 ]
