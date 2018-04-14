@@ -124,7 +124,10 @@ heap: context [
             all [
                 indexOfLeftChild <= heapSize
                 not none? h/:indexOfLeftChild
-                (probe compare h/(findMinChild indexOfLeftChild indexOfRightChild) probe h/:indexOfCurrentNode) < 0
+                [
+                    minChild: findMinChild indexOfLeftChild indexOfRightChild
+                    (compare h/:minChild h/:indexOfCurrentNode) < 0
+                ]
             ] 
         ] [
 
