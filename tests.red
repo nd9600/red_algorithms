@@ -4,8 +4,8 @@ Red [
     License: "MIT - https://opensource.org/licenses/MIT"
 ]
 
-do %../functional.red
-do %../helpers.red
+do %functional.red
+do %helpers.red
 
 assert: function [
     "Raises an error if every value in 'conditions doesn't evaluate to true. Inclose variables in brackets to compose them"

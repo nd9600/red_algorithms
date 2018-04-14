@@ -2,7 +2,7 @@ Red [
     Title: "Heap tests"
 ]
 
-do %heap.red
+do %deflate/heap.red
 
 tests: context [
 
