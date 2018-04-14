@@ -66,8 +66,8 @@ heap: context [
         leftChildIndex [integer!]
         rightChildIndex [integer!]
     ] [
-        if (compare h/:leftChildIndex h/:rightChildIndex) < 0 [return h/:leftChildIndex]
-        h/:rightChildIndex
+        if (compare h/:leftChildIndex h/:rightChildIndex) < 0 [return leftChildIndex]
+        rightChildIndex
     ]
 
     ; inserts an element into the heap
@@ -131,6 +131,13 @@ heap: context [
 
         print minElement
         print toString h
+        print rejoin ["heapSize: " heapSize]
+        print rejoin ["indexOfCurrentNode: " indexOfCurrentNode]
+        print rejoin ["indexOfLeftChild: " indexOfLeftChild]
+        print rejoin ["indexOfRightChild: " indexOfRightChild]
+        print rejoin ["h/:indexOfCurrentNode: " h/:indexOfCurrentNode]
+        print rejoin ["h/:indexOfLeftChild: " h/:indexOfLeftChild]
+        print rejoin ["h/:indexOfRightChild: " h/:indexOfRightChild]
 
         ; while a minimum child node exists, and it's less than the current node, swap them
         while [ 
@@ -147,6 +154,14 @@ heap: context [
             indexOfCurrentNode: indexOfMinChild
             indexOfLeftChild: 2 * indexOfCurrentNode
             indexOfRightChild: (2 * indexOfCurrentNode) + 1
+
+            print toString [newline h]
+            print rejoin ["indexOfCurrentNode: " indexOfCurrentNode]
+            print rejoin ["indexOfLeftChild: " indexOfLeftChild]
+            print rejoin ["indexOfRightChild: " indexOfRightChild]
+            print rejoin ["h/:indexOfCurrentNode: " h/:indexOfCurrentNode]
+            print rejoin ["h/:indexOfLeftChild: " h/:indexOfLeftChild]
+            print rejoin ["h/:indexOfRightChild: " h/:indexOfRightChild]
         ]
         minElement
     ]
