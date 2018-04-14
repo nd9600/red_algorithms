@@ -1,0 +1,7 @@
+Heap -> priority queue -> Huffman coding
+Canonical Huffman coding
+
+LZ77
+
+DEFLATE
+
