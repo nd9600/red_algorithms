@@ -1,35 +1,3 @@
-Red [
-    Title:   "Binary min-heap implementation, as a block!"
-    Author:  "Nathan Douglas"
-    License: "MIT - https://opensource.org/licenses/MIT"
-    Description: {Every node in a heap has the heap property. This is a min-heap, so:         
-        If P is a parent of C, then P's key is less than or equal to C's.
-
-                            1
-                        4       11
-                       5 20   13  15
-                           25       21
-
-        This is a binary heap, so the heap is a binary tree - a parent node can have a maximum of 2 children
-        The root node always has the element with the lowest key
-        The default implementation works with anything than can be compared with < - override the 'compare function to use something else
-
-        First element contains the root
-        Next two elements contains its children
-        Next four elements contains the children of those two nodes, etc.
-        -> children of node at position n are at 2n and 2n + 1
-
-         1    2    3    4    5    6    7
-        [a    b    c    d    e    f    g]
-         |    |    |    |    |    |    |
-          ---------     |    |    |    |
-              |    |    |    |    |    |
-               --------------     |    |
-                   |              |    |
-                    -------------------
-        }
-]
-
 heap: context [
 
     ; the things stored in the heap - you can store whatever you want, as long as you override the 'compare function below
@@ -119,6 +87,14 @@ heap: context [
         indexOfLeftChild: 2 * indexOfCurrentNode
         indexOfRightChild: (2 * indexOfCurrentNode) + 1
 
+        print rejoin [newline "h: " toString]
+        print rejoin ["indexOfCurrentNode: " indexOfCurrentNode]
+        print rejoin ["indexOfLeftChild: " indexOfLeftChild]
+        print rejoin ["indexOfRightChild: " indexOfRightChild]
+        print rejoin ["h/:indexOfCurrentNode: " h/:indexOfCurrentNode]
+        print rejoin ["h/:indexOfLeftChild: " h/:indexOfLeftChild]
+        print rejoin ["h/:indexOfRightChild: " h/:indexOfRightChild]
+
         ; while a minimum child node exists, and it's less than the current node, swap them
         while [ 
             all [
@@ -136,6 +112,14 @@ heap: context [
             indexOfCurrentNode: indexOfMinChild
             indexOfLeftChild: 2 * indexOfCurrentNode
             indexOfRightChild: (2 * indexOfCurrentNode) + 1
+
+            print rejoin [newline "h: " toString]
+            print rejoin ["indexOfCurrentNode: " indexOfCurrentNode]
+            print rejoin ["indexOfLeftChild: " indexOfLeftChild]
+            print rejoin ["indexOfRightChild: " indexOfRightChild]
+            print rejoin ["h/:indexOfCurrentNode: " h/:indexOfCurrentNode]
+            print rejoin ["h/:indexOfLeftChild: " h/:indexOfLeftChild]
+            print rejoin ["h/:indexOfRightChild: " h/:indexOfRightChild]
         ]
         minElement
     ]
