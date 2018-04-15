@@ -68,7 +68,7 @@ tests: context [
     ]
 
     ; tests if a heap is created and popped from correctly, with a big heap
-    testBigHeapsort: function [] [
+    -testBigHeapsort: function [] [
         hRandom: copy []
         loop to-integer 1e4 [append hRandom (1 + to-integer random 1e4)]
 

@@ -79,7 +79,7 @@ heap: context [
     insertH: function [
         e [any-type!]
     ] [
-        append h e
+        append/only h e
 
         ; 7 / 2 and 6 / 2 both == 3
         indexOfCurrentNode: length? h

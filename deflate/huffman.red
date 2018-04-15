@@ -6,12 +6,15 @@ Red [
     }
 ]
 
-do %functional.red
+do %../functional.red
+do %heap.red
 
-context [
+huffmanTree: context [
     string: copy {Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.}
 
     frequencies: copy []
+    freqsHeap: copy []
+    tree: copy []
 
     ; packs consecutive duplicates of list elements into sublists
     pack: function [series [series!]] [
@@ -34,11 +37,32 @@ context [
     ]
 
     ; gets the (sorted) frequencies of all characters in a string
-    getFrequencies: func [] [
+    getFrequencies: function [] [
         inBinary: enbase/base string 2
-        groupedBinary: parse inBinary [ collect [any [keep 8 skip] [end | collect to end]  ]
+        groupedBinary: parse inBinary [collect [
+            any [keep 8 skip] [end | collect to end]  
+        ]]
         sortedGroups: sort copy groupedBinary
         rleSortedGroups: rle sortedGroups
-        frequencies: sort copy rleSortedGroups
+        self/frequencies: sort copy rleSortedGroups
+    ]
+
+    createTree: function [] [
+        freqs: copy self/frequencies
+        self/freqsHeap: make heap [
+            compare: function [
+                a [any-type!]
+                b [any-type!]
+            ] [
+                case [
+                    a/1 < b/1 [return -1]
+                    b/1 < a/1 [return 1]
+                    true [return 0]
+                ]
+            ]
+        ]
+        foreach freq freqs [
+            self/freqsHeap/insertH freq
+        ]
     ]
 ]
