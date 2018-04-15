@@ -12,4 +12,12 @@ node: context [
     parent: none
     leftChild: none
     rightChild: none
+
+    inOrder: function [] [
+        returning: copy []
+        if not none? self/leftChild [append/only returning self/leftChild/inOrder]
+        append/only returning self/value
+        if not none? self/rightChild [append/only returning self/rightChild/inOrder]
+        returning
+    ]
 ]

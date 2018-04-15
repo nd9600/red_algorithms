@@ -19,6 +19,7 @@ huffmanTree: context [
     frequencies: copy []
     freqsHeap: copy []
     tree: copy []
+    prefixCodes: copy []
 
     ; packs consecutive duplicates of list elements into sublists
     pack: function [series [series!]] [
@@ -53,7 +54,6 @@ huffmanTree: context [
     ]
 
     createFreqsHeap: function [] [
-        freqs: copy self/frequencies
         self/freqsHeap: make heap [
             compare: function [
                 a [any-type!]
@@ -68,9 +68,9 @@ huffmanTree: context [
         ]
 
         ; we add a leaf node containing each frequency, to the heap
-        foreach freqPair freqs [
-            freqNode: make node compose/deep [
-                value: [(freqPair/1) [(freqPair/2)]]
+        foreach freqPair self/frequencies [
+            freqNode: make node [
+                value: reduce freqPair
             ]
             self/freqsHeap/insertH freqNode
         ]
@@ -86,7 +86,7 @@ huffmanTree: context [
             ;print rejoin ["nodeWithLowestProbability: " mold nodeWithSecondLowestProbability]
 
             newInternalNode: make node compose/deep/only [
-                value: [(nodeWithLowestProbability/value/1 + nodeWithSecondLowestProbability/value/1) (append copy nodeWithLowestProbability/value/2 nodeWithSecondLowestProbability/value/2 )]
+                value: [(nodeWithLowestProbability/value/1 + nodeWithSecondLowestProbability/value/1)]
                 leftChild: (nodeWithLowestProbability)
                 rightChild: (nodeWithSecondLowestProbability)
             ]
@@ -98,5 +98,9 @@ huffmanTree: context [
 
         ; at the end of the process, the last node in the priority queue is the Huffman tree's root node
         self/tree: self/freqsHeap/minH
+    ]
+
+    createPrefixCodes: function [] [
+        self/tree/inOrder
     ]
 ]
