@@ -13,10 +13,11 @@ context [
 
     frequencies: copy []
 
-    pack: function [b] [
+    ; packs consecutive duplicates of list elements into sublists
+    pack: function [series [series!]] [
         packed: copy []
         previous: none
-        foreach element b [
+        foreach element series [
             either previous == element [
                 append last packed element
             ] [
@@ -27,10 +28,12 @@ context [
         packed
     ]
 
-    rle: function [b] [
-        f_map lambda [reduce [length? ? first ?]] pack b
+    ; does run-length encoding of a series!
+    rle: function [series [series!]] [
+        f_map lambda [reduce [length? ? first ?]] pack series
     ]
 
+    ; gets the (sorted) frequencies of all characters in a string
     getFrequencies: func [] [
         inBinary: enbase/base string 2
         groupedBinary: parse inBinary [ collect [any [keep 8 skip] [end | collect to end]  ]
