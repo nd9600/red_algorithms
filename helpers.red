@@ -22,6 +22,20 @@ endsWith: function [
     either all [not none? match tail? match] [true] [false]
 ]
 
+flatten: function[b][
+    flattened: copy []
+    while [not tail? b] [
+        element: first b
+        either block? element [
+            append flattened flatten element
+        ] [
+            append flattened element
+        ]
+        b: next b
+    ]
+    flattened
+]
+
 findFiles: function [
     "find files in a directory (including sub-directories), optionally matching against a condition"
     dir [file!]

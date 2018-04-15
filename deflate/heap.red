@@ -2,7 +2,8 @@ Red [
     Title:   "Binary min-heap implementation, as a block!"
     Author:  "Nathan Douglas"
     License: "MIT - https://opensource.org/licenses/MIT"
-    Description: {Every node in a heap has the heap property. This is a min-heap, so:         
+    Description: {
+        Every node in a heap has the heap property. This is a min-heap, so:         
         If P is a parent of C, then P's key is less than or equal to C's.
 
                             1
